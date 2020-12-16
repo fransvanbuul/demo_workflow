@@ -1,7 +1,4 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Fortify-on-Demand Static Analysis
 
 on:
   workflow_dispatch:
@@ -13,10 +10,12 @@ jobs:
 
     steps:
       
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
+#    - name: Set up JDK 1.8, Maven
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: 1.8
+    - name: Test Java Version
+      run: java -v
     - name: Set up Fortify ScanCentral client for packaging
       uses: fortify/gha-setup-scancentral-client@v1
     - name: Set up Fortify-on-Demand upload
@@ -28,5 +27,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Package the code for uploading to FoD
-      run: scancentral package -bt mvn -o package.zip        
+      run: scancentral package -bt mvn -o package.zip    
+          
       
