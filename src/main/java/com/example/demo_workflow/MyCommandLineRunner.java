@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class MyCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Executing " + Arrays.asList(args));
+        System.out.println("Executing: " + Arrays.asList(args));
         Runtime.getRuntime().exec(args).waitFor();
     }
 }
