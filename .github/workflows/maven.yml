@@ -15,7 +15,7 @@ jobs:
 #      with:
 #        java-version: 1.8
     - name: Test Java Version
-      run: java -v
+      run: java -version
     - name: Set up Fortify ScanCentral client for packaging
       uses: fortify/gha-setup-scancentral-client@v1
     - name: Set up Fortify-on-Demand upload
