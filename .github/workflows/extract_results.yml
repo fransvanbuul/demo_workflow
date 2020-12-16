@@ -1,0 +1,26 @@
+name: FoD issues to GitHub using FortifyVulnerabilityExporter
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://fortifydocker/fortify-vulnerability-exporter:latest
+        with:
+          export_config: /config/FoDToGitHub.yml
+          fod_baseUrl: ${{ secrets.FOD_AURL }}
+          fod_tenant: ${{ secrets.FOD_TENANT }}
+          fod_userName: ${{ secrets.FOD_USER }}
+          fod_password: ${{ secrets.FOD_PAT }}
+          fod_release_id: ${{ secrets.FOD_RID }}
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: ./gh-fortify-sast.sarif
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: sarif-files
+          path: ./gh-fortify-sast.sarif
