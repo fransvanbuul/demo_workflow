@@ -23,9 +23,18 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Package the code for uploading to FoD
       run: scancentral package -bt mvn -o package.zip    
+    - name: Upload the code to FoD for static analysis
+      run: java -jar $FOD_UPLOAD_JAR -z package.zip -aurl $FOD_AURL -purl $FOD_PURL -rid "$FOD_RELEASE_ID" -tc "$FOD_TENANT" -uc "$FOD_USER" "$FOD_PAT" -ep 2 -pp 1
+      env: 
+        FOD_AURL: ${{ secrets.FOD_EIGHTBALL_API_URL }}
+        FOD_PURL: ${{ secrets.FOD_EIGHTBALL_BASE_URL }}
+        FOD_TENANT: ${{ secrets.FOD_EIGHTBALL_TENANT }}  
+        FOD_USER: ${{ secrets.FOD_EIGHTBALL_USER }}
+        FOD_PAT: ${{ secrets.FOD_EIGHTBALL_PAT }}
+        FOD_RELEASE_ID: ${{ secrets.FOD_EIGHTBALL_RELEASE_ID }} 
+
     - name: Save the resulting package.zip for inspection
       uses: actions/upload-artifact@v2
-      if: always()
       with:
         name: package.zip
         path: package.zip  
